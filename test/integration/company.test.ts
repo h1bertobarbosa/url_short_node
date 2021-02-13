@@ -3,7 +3,7 @@ import request from 'supertest';
 import knex from '@src/config/database';
 
 afterEach(async () => {
-  await knex('companies').truncate();
+  await knex('companies').delete();
 });
 
 describe('Company Tests', () => {
