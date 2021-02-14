@@ -1,10 +1,10 @@
 import {
   Company,
 } from '@src/modules/company/contracts/Company';
-declare global{
+declare global {
   namespace Express {
-    interface Request {
+      interface Request{
         company: Company
-    }
+      }
   }
 }

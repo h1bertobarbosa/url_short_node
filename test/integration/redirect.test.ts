@@ -3,7 +3,11 @@ import request from 'supertest';
 import knex from '@src/config/database';
 import { Company } from '@src/modules/company/contracts/Company';
 import { v4 as uuidv4 } from 'uuid';
-import { CREATED, BAD_REQUEST } from '@src/utils/constants.util';
+import {
+  CREATED,
+  BAD_REQUEST,
+  MOVED_PERMANENTLY,
+} from '@src/utils/constants.util';
 import { Redirect } from '@root/src/modules/redirect/contracts/Redirect';
 
 let company: Company;
@@ -58,5 +62,46 @@ describe('Redirect Tests', () => {
       .expect(BAD_REQUEST);
 
     expect(result.body.message).toEqual('Url code already exists');
+  });
+
+  describe('GET /{hash} - redirect 301 to original url', () => {
+    it('shold validate if url code not exists', async () => {
+      const data = {
+        id: uuidv4(),
+        original_url: 'https://google.com',
+        url_code: uuidv4(),
+      };
+      await knex<Redirect>('redirects')
+        .insert(data)
+        .returning('*');
+
+      const result = await request(app)
+        .get('/some-hash')
+        .set('apikey', company.apikey)
+        .send(data)
+        .expect(BAD_REQUEST);
+      expect(result.body.message).toEqual('Url code not exists');
+    });
+
+    it('shold create a new redirect url', async () => {
+      const data = {
+        id: uuidv4(),
+        original_url: 'https://google.com',
+        url_code: uuidv4(),
+      };
+      const createdRed = await knex<Redirect>('redirects')
+        .insert(data)
+        .returning('*');
+
+      const result = await request(app)
+        .get(`/${createdRed[0].url_code}`)
+        .set('apikey', company.apikey)
+        .send(data)
+        .expect(MOVED_PERMANENTLY);
+
+      expect(result.text).toEqual(
+        `Moved Permanently. Redirecting to ${data.original_url}`,
+      );
+    });
   });
 });
