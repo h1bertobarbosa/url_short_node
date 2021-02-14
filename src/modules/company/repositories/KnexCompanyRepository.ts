@@ -23,4 +23,17 @@ export default class KnexCompanyRepository implements CompanyRepository {
 
     return company;
   }
+
+  async findByApiKey(apikey: string): Promise<Company | null> {
+    const company = await knex<Company>('companies')
+      .where({ apikey })
+      .select('*')
+      .first();
+
+    if (!company) {
+      return null;
+    }
+
+    return company;
+  }
 }

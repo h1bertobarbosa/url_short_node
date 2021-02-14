@@ -1,6 +1,7 @@
 import app from '@src/main';
 import request from 'supertest';
 import knex from '@src/config/database';
+import { CREATED } from '@src/utils/constants.util';
 
 afterEach(async () => {
   await knex('companies').delete();
@@ -8,7 +9,7 @@ afterEach(async () => {
 
 describe('Company Tests', () => {
   describe('POST /companies - create a new company', () => {
-    it('Hello API Request', async () => {
+    it('should create a new company', async () => {
       const data = {
         name: 'Company name',
         email: 'email@gmail.com',
@@ -16,9 +17,11 @@ describe('Company Tests', () => {
       };
       const result = await request(app)
         .post('/companies')
-        .send(data);
+        .send(data)
+        .expect(CREATED);
 
-      expect(result.status).toEqual(201);
+      expect(result.body.code).toEqual('company.create.success');
+      expect(result.body.data).toHaveProperty('id');
     });
   });
 });

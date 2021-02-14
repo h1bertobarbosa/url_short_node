@@ -17,4 +17,5 @@ export interface CompanyRequestData {
 
 export interface CompanyRepository {
   create(data: CompanyRequestData): Promise<Company>;
+  findByApiKey(apikey: string): Promise<Company | null>;
 }
