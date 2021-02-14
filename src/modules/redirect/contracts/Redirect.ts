@@ -17,4 +17,5 @@ export interface Redirect {
 
 export interface RedirectRepository {
   create(data: RedirectRequestData): Promise<Redirect | null>;
+  findByUrlCode(url_code: string): Promise<Redirect | null>;
 }

@@ -8,6 +8,11 @@ import {
 } from '@src/modules/company/contracts/Company';
 
 export default class KnexCompanyRepository implements CompanyRepository {
+  private companyQueryBuilder;
+  constructor() {
+    this.companyQueryBuilder = knex<Company>('companies');
+  }
+
   async create({ name, email, phone }: CompanyRequestData): Promise<Company> {
     const apikey = crypto.randomBytes(32).toString('hex');
     const company: Company = {
@@ -19,13 +24,13 @@ export default class KnexCompanyRepository implements CompanyRepository {
       active: true,
     };
 
-    await knex<Company>('companies').insert(company);
+    await this.companyQueryBuilder.insert(company);
 
     return company;
   }
 
   async findByApiKey(apikey: string): Promise<Company | null> {
-    const company = await knex<Company>('companies')
+    const company = await this.companyQueryBuilder
       .where({ apikey })
       .select('*')
       .first();

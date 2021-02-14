@@ -8,6 +8,12 @@ import {
 } from '@src/modules/redirect/contracts/Redirect';
 
 export default class KnexRedirectRepository implements RedirectRepository {
+  private redirectQueryBuilder;
+
+  constructor() {
+    this.redirectQueryBuilder = knex<Redirect>('redirects');
+  }
+
   async create({
     original_url,
     company_id,
@@ -21,10 +27,24 @@ export default class KnexRedirectRepository implements RedirectRepository {
       url_code: url_code || crypto.randomBytes(6).toString('hex'),
       external_id,
     };
-    const created = await knex<Redirect>('redirects')
+
+    const created = await this.redirectQueryBuilder
       .insert(redirect)
       .returning('*');
 
     return created.pop() || null;
+  }
+
+  async findByUrlCode(url_code: string): Promise<Redirect | null> {
+    const redirect = await this.redirectQueryBuilder
+      .where({ url_code })
+      .select('*')
+      .first();
+
+    if (!redirect) {
+      return null;
+    }
+
+    return redirect;
   }
 }
