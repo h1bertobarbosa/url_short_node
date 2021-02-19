@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import express from 'express';
+import useragent from 'express-useragent';
 import 'express-async-errors';
 import cors from 'cors';
 import '@src/config/env';
@@ -9,6 +10,7 @@ import AppErrorException from '@src/exceptions/AppErrorException';
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(useragent.express());
 // app.use('/files', express.static(uploadConfig.uploadsFolder));
 // app.use(rateLimiter);
 app.use(routes);

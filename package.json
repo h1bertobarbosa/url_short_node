@@ -17,7 +17,7 @@
     "prettier-watch:darwin:linux": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
     "prettier-watch:default": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
     "migrationTest": "NODE_ENV=test knex migrate:up",
-    "test": "npm run migrationTest && NODE_ENV=test jest --runInBand",
+    "test": "npm run migrationTest && NODE_ENV=test jest --runInBand --coverage",
     "test:dev": "npm run migrationTest && NODE_ENV=test jest --watchAll"
   },
   "keywords": [],
@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.9",
     "@types/express": "^4.17.9",
+    "@types/express-useragent": "^1.0.0",
     "@types/jest": "^26.0.20",
     "@types/node": "^12.7.2",
     "@types/supertest": "^2.0.10",
@@ -53,6 +54,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "express-useragent": "^1.0.15",
     "inversify": "^5.0.5",
     "knex": "^0.21.17",
     "pg": "^8.5.1",

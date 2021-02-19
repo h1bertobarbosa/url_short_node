@@ -18,7 +18,7 @@ const knexConfig: Config = {
   },
   migrations: {
     tableName: 'migrations',
-    directory: './database/migrations',
+    directory: './src/database/migrations',
   },
 };
 

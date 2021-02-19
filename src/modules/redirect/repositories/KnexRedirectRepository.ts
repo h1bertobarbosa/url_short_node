@@ -6,7 +6,10 @@ import {
   RedirectRequestData,
   Redirect,
 } from '@src/modules/redirect/contracts/Redirect';
-
+import {
+  RedirectReport,
+  RedirectReportCreateData,
+} from '@src/modules/redirect/contracts/RedirectReport';
 export default class KnexRedirectRepository implements RedirectRepository {
   private redirectQueryBuilder;
 
@@ -46,5 +49,15 @@ export default class KnexRedirectRepository implements RedirectRepository {
     }
 
     return redirect;
+  }
+
+  async createRedirectReport(
+    data: RedirectReportCreateData,
+  ): Promise<RedirectReport | null> {
+    const redirectReport = await knex<RedirectReport>('redirects_report')
+      .insert({ ...data, id: uuidv4() })
+      .returning('*');
+
+    return redirectReport.pop() || null;
   }
 }

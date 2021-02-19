@@ -1,20 +1,42 @@
 import {
-  RedirectRequestData,
   RedirectRepository,
   Redirect,
 } from '@src/modules/redirect/contracts/Redirect';
+import { RedirectReportRequestData } from '@src/modules/redirect/contracts/RedirectReport';
 import AppErrorException from '@src/exceptions/AppErrorException';
 import { BAD_REQUEST } from '@src/utils/constants.util';
 
 export default class RedirectRouterService {
   constructor(private redirectRepository: RedirectRepository) {}
 
-  async execute(url_code: string): Promise<Redirect> {
+  async execute({
+    url_code,
+    ip,
+    browser,
+    browser_version,
+    isBot,
+    isDesktop,
+    isMobile,
+    os,
+    platform,
+  }: RedirectReportRequestData): Promise<Redirect> {
     const redirect = await this.redirectRepository.findByUrlCode(url_code);
 
     if (!redirect) {
       throw new AppErrorException('Url code not exists', BAD_REQUEST);
     }
+
+    await this.redirectRepository.createRedirectReport({
+      ip,
+      browser,
+      browser_version,
+      isBot,
+      isDesktop,
+      isMobile,
+      os,
+      platform,
+      redirect_id: redirect.id,
+    });
 
     return redirect;
   }

@@ -12,6 +12,7 @@ import { Redirect } from '@root/src/modules/redirect/contracts/Redirect';
 
 let company: Company;
 afterEach(async () => {
+  await knex('redirects_report').delete();
   await knex('redirects').delete();
   await knex('companies').delete();
 });
@@ -26,7 +27,16 @@ beforeEach(async () => {
     active: true,
   };
 
+  await knex('redirects_report').delete();
+  await knex('redirects').delete();
+  await knex('companies').delete();
   await knex<Company>('companies').insert(company);
+});
+
+afterAll(async () => {
+  await knex('redirects_report').delete();
+  await knex('redirects').delete();
+  await knex('companies').delete();
 });
 
 describe('Redirect Tests', () => {
