@@ -67,10 +67,14 @@ export default class KnexRedirectRepository implements RedirectRepository {
     company_id,
     perPage = 10,
     currentPage = 1,
+    external_id,
   }: ListRedirectRequestData): Promise<IWithPagination> {
-    return this.redirectQueryBuilder
-      .where({ company_id })
-      .select('*')
-      .paginate({ perPage, currentPage });
+    const redirects = this.redirectQueryBuilder.where({ company_id });
+
+    if (external_id) {
+      redirects.where({ external_id });
+    }
+
+    return redirects.select('*').paginate({ perPage, currentPage });
   }
 }

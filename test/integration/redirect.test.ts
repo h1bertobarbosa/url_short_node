@@ -61,12 +61,6 @@ describe('Redirect Tests', () => {
 
   describe('GET /redirects - list redirects', () => {
     it('shold list created redirects by company', async () => {
-      const data = {
-        company_id: company.id,
-        original_url: 'https://google.com',
-        url_code: crypto.randomBytes(6).toString('hex'),
-      };
-
       await knex<Redirect>('redirects').insert({
         id: uuidv4(),
         company_id: company.id,
@@ -87,12 +81,6 @@ describe('Redirect Tests', () => {
         original_url: 'https://google.com',
         url_code: crypto.randomBytes(6).toString('hex'),
       });
-
-      // await Promise.all([
-      //   knex<Redirect>('redirects').insert({ ...data, id: uuidv4() }),
-      //   knex<Redirect>('redirects').insert({ ...data, id: uuidv4() }),
-      //   knex<Redirect>('redirects').insert({ ...data, id: uuidv4() }),
-      // ]);
 
       const response = await request(app)
         .get('/redirects')
@@ -100,7 +88,46 @@ describe('Redirect Tests', () => {
         .expect(OK);
 
       expect(response.body.code).toEqual('redirect.list.success');
-      // expect(result.body.data).toHaveProperty('id');
+      expect(response.body.data).toHaveLength(3);
+      expect(response.body).toHaveProperty('pagination');
+    });
+
+    it('shold list created redirects by external_id', async () => {
+      await knex<Redirect>('redirects').insert({
+        id: uuidv4(),
+        company_id: company.id,
+        original_url: 'https://google.com',
+        url_code: crypto.randomBytes(6).toString('hex'),
+      });
+
+      await knex<Redirect>('redirects').insert({
+        id: uuidv4(),
+        company_id: company.id,
+        original_url: 'https://google.com',
+        url_code: crypto.randomBytes(6).toString('hex'),
+      });
+
+      const external_id = '2';
+
+      await knex<Redirect>('redirects').insert({
+        id: uuidv4(),
+        company_id: company.id,
+        original_url: 'https://google.com',
+        url_code: crypto.randomBytes(6).toString('hex'),
+        external_id,
+      });
+
+      const response = await request(app)
+        .get('/redirects')
+        .query({
+          external_id,
+        })
+        .set('apikey', company.apikey)
+        .expect(OK);
+
+      expect(response.body.code).toEqual('redirect.list.success');
+      expect(response.body.data).toHaveLength(1);
+      expect(response.body).toHaveProperty('pagination');
     });
   });
 

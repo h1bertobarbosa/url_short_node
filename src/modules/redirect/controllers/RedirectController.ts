@@ -9,18 +9,18 @@ export default class RedirectController {
     const listService = new ListRedirectService(new KnexRedirectRepository());
     const currentPage = request.query.page || 1;
     const perPage = request.query.perPage || 10;
+    const external_id = request.query.external_id || '';
 
     const redirects = await listService.execute({
       company_id: request.company.id,
       currentPage: Number(currentPage),
       perPage: Number(perPage),
+      external_id: String(external_id),
     });
 
-    return response.status(OK).json({
-      code: 'redirect.list.success',
-      data: redirects.data,
-      pagination: redirects.pagination,
-    });
+    return response
+      .status(OK)
+      .json({ ...redirects, code: 'redirect.list.success' });
   }
 
   async store(request: Request, response: Response): Promise<Response> {

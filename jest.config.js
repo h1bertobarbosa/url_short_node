@@ -20,4 +20,5 @@ module.exports = {
     '@test/(.*)': '<rootDir>/test/$1',
   },
   collectCoverageFrom: ['./src/**/*.ts'],
+  setupFilesAfterEnv: ['<rootDir>/setupJest.ts'],
 };
