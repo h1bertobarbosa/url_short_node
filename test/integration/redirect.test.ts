@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import app from '@src/main';
 import request from 'supertest';
 import knex from '@src/config/database';
@@ -7,6 +8,7 @@ import {
   CREATED,
   BAD_REQUEST,
   MOVED_PERMANENTLY,
+  OK,
 } from '@src/utils/constants.util';
 import { Redirect } from '@root/src/modules/redirect/contracts/Redirect';
 
@@ -57,10 +59,56 @@ describe('Redirect Tests', () => {
     });
   });
 
+  describe('GET /redirects - list redirects', () => {
+    it('shold list created redirects by company', async () => {
+      const data = {
+        company_id: company.id,
+        original_url: 'https://google.com',
+        url_code: crypto.randomBytes(6).toString('hex'),
+      };
+
+      await knex<Redirect>('redirects').insert({
+        id: uuidv4(),
+        company_id: company.id,
+        original_url: 'https://google.com',
+        url_code: crypto.randomBytes(6).toString('hex'),
+      });
+
+      await knex<Redirect>('redirects').insert({
+        id: uuidv4(),
+        company_id: company.id,
+        original_url: 'https://google.com',
+        url_code: crypto.randomBytes(6).toString('hex'),
+      });
+
+      await knex<Redirect>('redirects').insert({
+        id: uuidv4(),
+        company_id: company.id,
+        original_url: 'https://google.com',
+        url_code: crypto.randomBytes(6).toString('hex'),
+      });
+
+      // await Promise.all([
+      //   knex<Redirect>('redirects').insert({ ...data, id: uuidv4() }),
+      //   knex<Redirect>('redirects').insert({ ...data, id: uuidv4() }),
+      //   knex<Redirect>('redirects').insert({ ...data, id: uuidv4() }),
+      // ]);
+
+      const response = await request(app)
+        .get('/redirects')
+        .set('apikey', company.apikey)
+        .expect(OK);
+
+      expect(response.body.code).toEqual('redirect.list.success');
+      // expect(result.body.data).toHaveProperty('id');
+    });
+  });
+
   it('shold validate if urlcode is unique when create a new redirect url', async () => {
     const data = {
       original_url: 'https://google.com',
       url_code: 'qwe23',
+      company_id: company.id,
     };
 
     await knex<Redirect>('redirects').insert({ ...data, id: uuidv4() });
@@ -80,6 +128,7 @@ describe('Redirect Tests', () => {
         id: uuidv4(),
         original_url: 'https://google.com',
         url_code: uuidv4(),
+        company_id: company.id,
       };
       await knex<Redirect>('redirects')
         .insert(data)
@@ -93,11 +142,12 @@ describe('Redirect Tests', () => {
       expect(result.body.message).toEqual('Url code not exists');
     });
 
-    it('shold create a new redirect url', async () => {
+    it('shold redirect 301 to original url', async () => {
       const data = {
         id: uuidv4(),
         original_url: 'https://google.com',
         url_code: uuidv4(),
+        company_id: company.id,
       };
       const createdRed = await knex<Redirect>('redirects')
         .insert(data)
@@ -105,8 +155,6 @@ describe('Redirect Tests', () => {
 
       const result = await request(app)
         .get(`/${createdRed[0].url_code}`)
-        .set('apikey', company.apikey)
-        .send(data)
         .expect(MOVED_PERMANENTLY);
 
       expect(result.text).toEqual(

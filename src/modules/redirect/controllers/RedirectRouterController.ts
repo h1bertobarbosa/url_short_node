@@ -13,16 +13,23 @@ export default class RedirectRouterController {
       ip = request.connection.remoteAddress;
     }
 
+    const userAgent = request.useragent;
+
     const redirect = await redirectRouterService.execute({
       url_code: request.params.urlCode,
       ip: String(ip),
-      os: request.useragent?.os,
-      platform: request.useragent?.platform,
-      browser: request.useragent?.browser,
-      browser_version: request.useragent?.version,
-      isBot: request.useragent?.isBot,
-      isDesktop: request.useragent?.isDesktop,
-      isMobile: request.useragent?.isMobile,
+      os: userAgent?.os,
+      platform: userAgent?.platform,
+      browser: userAgent?.browser,
+      browser_version: userAgent?.version,
+      isBot: userAgent?.isBot,
+      isDesktop: userAgent?.isDesktop,
+      isMobile: userAgent?.isMobile,
+      isAndroid: userAgent?.isAndroid,
+      isiPhone: userAgent?.isiPhone,
+      isMac: userAgent?.isMac,
+      isLinux: userAgent?.isLinux,
+      isWindows: userAgent?.isWindows,
     });
 
     return response.redirect(301, redirect.original_url);

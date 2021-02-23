@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
+import { IWithPagination } from 'knex-paginate';
 import knex from '@src/config/database';
 import {
   RedirectRepository,
   RedirectRequestData,
   Redirect,
+  ListRedirectRequestData,
 } from '@src/modules/redirect/contracts/Redirect';
 import {
   RedirectReport,
@@ -59,5 +61,16 @@ export default class KnexRedirectRepository implements RedirectRepository {
       .returning('*');
 
     return redirectReport.pop() || null;
+  }
+
+  async findByCompany({
+    company_id,
+    perPage = 10,
+    currentPage = 1,
+  }: ListRedirectRequestData): Promise<IWithPagination> {
+    return this.redirectQueryBuilder
+      .where({ company_id })
+      .select('*')
+      .paginate({ perPage, currentPage });
   }
 }

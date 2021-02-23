@@ -1,4 +1,7 @@
-import knex from 'knex';
+import Knex from 'knex';
 import knexConfig from '@src/config/knex.config';
+import { attachPaginate } from 'knex-paginate';
 
-export default knex(knexConfig);
+const knex = Knex(knexConfig);
+attachPaginate();
+export default knex;

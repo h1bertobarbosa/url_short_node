@@ -7,5 +7,6 @@ const redirectRouter = Router();
 
 redirectRouter.use(ensureApiKey);
 redirectRouter.post('/', redirectController.store);
+redirectRouter.get('/', redirectController.index);
 
 export default redirectRouter;

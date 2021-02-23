@@ -1,3 +1,5 @@
+import { IWithPagination } from 'knex-paginate';
+
 import {
   RedirectReport,
   RedirectReportCreateData,
@@ -17,10 +19,18 @@ export interface Redirect {
   created_at?: Date;
   updated_at?: Date;
 }
+export interface ListRedirectRequestData {
+  external_id?: string;
+  company_id: string;
+  currentPage?: number;
+  perPage?: number;
+}
+
 export interface RedirectRepository {
   create(data: RedirectRequestData): Promise<Redirect | null>;
   findByUrlCode(url_code: string): Promise<Redirect | null>;
   createRedirectReport(
     data: RedirectReportCreateData,
   ): Promise<RedirectReport | null>;
+  findByCompany(data: ListRedirectRequestData): Promise<IWithPagination>;
 }

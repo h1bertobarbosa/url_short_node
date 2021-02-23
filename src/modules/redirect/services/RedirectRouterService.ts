@@ -19,6 +19,10 @@ export default class RedirectRouterService {
     isMobile,
     os,
     platform,
+    isAndroid,
+    isiPhone,
+    isMac,
+    isLinux,
   }: RedirectReportRequestData): Promise<Redirect> {
     const redirect = await this.redirectRepository.findByUrlCode(url_code);
 
@@ -35,6 +39,10 @@ export default class RedirectRouterService {
       isMobile,
       os,
       platform,
+      isAndroid,
+      isiPhone,
+      isMac,
+      isLinux,
       redirect_id: redirect.id,
     });
 

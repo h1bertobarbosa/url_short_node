@@ -9,6 +9,11 @@ export interface RedirectReport {
   isMobile: boolean;
   isDesktop: boolean;
   isBot: boolean;
+  isAndroid: boolean;
+  isiPhone: boolean;
+  isMac: boolean;
+  isLinux: boolean;
+  isWindows: boolean;
 }
 
 export interface RedirectReportRequestData {
@@ -21,6 +26,11 @@ export interface RedirectReportRequestData {
   isMobile?: boolean;
   isDesktop?: boolean;
   isBot?: boolean;
+  isAndroid?: boolean;
+  isiPhone?: boolean;
+  isMac?: boolean;
+  isLinux?: boolean;
+  isWindows?: boolean;
 }
 
 export interface RedirectReportCreateData {
@@ -32,5 +42,10 @@ export interface RedirectReportCreateData {
   isMobile?: boolean;
   isDesktop?: boolean;
   isBot?: boolean;
+  isAndroid?: boolean;
+  isiPhone?: boolean;
+  isMac?: boolean;
+  isLinux?: boolean;
+  isWindows?: boolean;
   redirect_id: string;
 }
