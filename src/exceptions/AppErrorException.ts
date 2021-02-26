@@ -1,4 +1,4 @@
-import { BAD_REQUEST } from '@src/utils/constants.util';
+import { BAD_REQUEST } from '@src/utils/HttpStatusCode.util';
 
 export default class AppErrorException {
   public readonly message: string;

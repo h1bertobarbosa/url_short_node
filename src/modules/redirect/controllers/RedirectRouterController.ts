@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import KnexRedirectRepository from '@src/modules/redirect/repositories/KnexRedirectRepository';
 import RedirectRouterService from '@src/modules/redirect/services/RedirectRouterService';
-
+import { MOVED_PERMANENTLY } from '@src/utils/HttpStatusCode.util';
 export default class RedirectRouterController {
   async index(request: Request, response: Response): Promise<void> {
     const redirectRouterService = new RedirectRouterService(
@@ -32,6 +32,6 @@ export default class RedirectRouterController {
       isWindows: userAgent?.isWindows,
     });
 
-    return response.redirect(301, redirect.original_url);
+    return response.redirect(MOVED_PERMANENTLY, redirect.original_url);
   }
 }

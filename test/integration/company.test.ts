@@ -1,7 +1,7 @@
 import app from '@src/main';
 import request from 'supertest';
 import knex from '@src/config/database';
-import { CREATED } from '@src/utils/constants.util';
+import { CREATED } from '@src/utils/HttpStatusCode.util';
 
 afterEach(async () => {
   await knex('companies').delete();

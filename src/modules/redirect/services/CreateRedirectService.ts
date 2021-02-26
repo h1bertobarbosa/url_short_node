@@ -4,7 +4,7 @@ import {
   Redirect,
 } from '@src/modules/redirect/contracts/Redirect';
 import AppErrorException from '@src/exceptions/AppErrorException';
-import { BAD_REQUEST } from '@src/utils/constants.util';
+import { BAD_REQUEST } from '@src/utils/HttpStatusCode.util';
 
 export default class CreateRedirectService {
   constructor(private redirectRepository: RedirectRepository) {}

@@ -9,7 +9,7 @@ import {
   BAD_REQUEST,
   MOVED_PERMANENTLY,
   OK,
-} from '@src/utils/constants.util';
+} from '@src/utils/HttpStatusCode.util';
 import { Redirect } from '@root/src/modules/redirect/contracts/Redirect';
 
 let company: Company;

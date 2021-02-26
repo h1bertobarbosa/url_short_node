@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { CompanyRequestData } from '@src/modules/company/contracts/Company';
 import KnexCompanyRepository from '@src/modules/company/repositories/KnexCompanyRepository';
 import CreateCompanyService from '@src/modules/company/services/CreateCompanyService';
-import { CREATED } from '@src/utils/constants.util';
+import { CREATED } from '@src/utils/HttpStatusCode.util';
 
 export default class CompanyController {
   async store(request: Request, response: Response): Promise<Response> {

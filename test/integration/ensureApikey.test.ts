@@ -1,6 +1,6 @@
 import app from '@src/main';
 import request from 'supertest';
-import { UNAUTHORIZED, FORBIDDEN } from '@src/utils/constants.util';
+import { UNAUTHORIZED, FORBIDDEN } from '@src/utils/HttpStatusCode.util';
 
 describe('Redirect Tests', () => {
   describe('POST /redirects - create a new redirect url', () => {

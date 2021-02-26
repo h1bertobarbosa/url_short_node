@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import AppErrorException from '@src/exceptions/AppErrorException';
 import KnexCompanyRepository from '@src/modules/company/repositories/KnexCompanyRepository';
-import { FORBIDDEN, UNAUTHORIZED } from '@src/utils/constants.util';
+import { FORBIDDEN, UNAUTHORIZED } from '@src/utils/HttpStatusCode.util';
 
 export default async function ensureApiKey(
   request: Request,
