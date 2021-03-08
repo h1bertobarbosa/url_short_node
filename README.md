@@ -1,44 +1,51 @@
-# 🧰 Simple TypeScript Starter | 2020
+# Url short node
 
-> We talk about a lot of **advanced Node.js and TypeScript** concepts on [the blog](https://khalilstemmler.com), particularly focused around Domain-Driven Design and large-scale enterprise application patterns. However, I received a few emails from readers that were interested in seeing what a basic TypeScript starter project looks like. So I've put together just that.
+Is a nodejs/typescript api for url short.
 
-### Features
+## Installation
 
-- Minimal
-- TypeScript v4
-- Testing with Jest
-- Linting with Eslint and Prettier
-- Pre-commit hooks with Husky
-- VS Code debugger scripts
-- Local development with Nodemon
+Use the npm or yarn to install dependencies for project and docker-compose to up a database.
 
-### Scripts
+```bash
+npm install
+docker-compose up -d
+```
 
-#### `npm run start:dev`
+## Up app on dev
 
-Starts the application in development using `nodemon` and `ts-node` to do hot reloading.
+```bash
+npm run start:dev
+```
+## Build and start
+```bash
+npm start
+```
+## Build
+```bash
+npm run build
+```
+## Run tests
+```bash
+npm run test
+```
 
-#### `npm run start`
+## Free Routes
+GET /:urlCode [redirect to original url]
 
-Starts the app in production by first building the project with `npm run build`, and then executing the compiled JavaScript at `build/index.js`.
+POST /companies [Create a new company and return apikey]
 
-#### `npm run build`
+## Secure routes [Send apikey in header eg: apikey: "s5ad4asd65a4d56a"]
+POST /redirects [Create a new url short]
+```json
+{
+"original_url": "https://google.com",
+"external_id": optional,
+"url_code": optional
+}
+```
 
-Builds the app at `build`, cleaning the folder first.
+GET /redirects [Return all rdirects created by company]
 
-#### `npm run test`
 
-Runs the `jest` tests once.
-
-#### `npm run test:dev`
-
-Run the `jest` tests in watch mode, waiting for file changes.
-
-#### `npm run prettier-format`
-
-Format your code.
-
-#### `npm run prettier-watch`
-
-Format your code in watch mode, waiting for file changes.
-
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

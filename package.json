@@ -1,8 +1,8 @@
 {
-  "name": "typescript-starter",
+  "name": "url_short_node",
   "version": "1.0.0",
-  "description": "A basic typescript app starter for newbies in 2019.",
-  "main": "index.js",
+  "description": "Is a nodejs/typescript api for url short.",
+  "main": "src/server.ts",
   "scripts": {
     "build": "rm -rf ./build/* && rimraf ./build && tsc",
     "start:dev": "ts-node-dev --files -r tsconfig-paths/register --inspect --ignore-watch node_modules src/server.ts",
@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/cors": "^2.8.9",
     "@types/express": "^4.17.9",

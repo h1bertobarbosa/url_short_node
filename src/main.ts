@@ -11,10 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(useragent.express());
-// app.use('/files', express.static(uploadConfig.uploadsFolder));
-// app.use(rateLimiter);
 app.use(routes);
-// app.use(errors());
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   if (err instanceof AppErrorException) {
     return response.status(err.status).json({
